@@ -10,13 +10,13 @@ fn main() {
     }
 
     match args[1].as_str() {
-       "server" => {
-           run_server();
-       },
-       "client" => {
-           run_client();
-       },
-       _ => {},
+        "server" => {
+            run_server();
+        },
+        "client" => {
+            run_client();
+        },
+        _ => {},
     }
 }
 
@@ -45,10 +45,19 @@ fn run_server() {
     let mut reader = BufReader::new(pipe);
     let mut s = String::new();
     loop {
-        reader.read_line(&mut s).unwrap();
-        print!("Client says: {}", s);
-        s.clear();
+        let res = reader.read_line(&mut s);
+        match res {
+            Ok(size) if size > 0 => {
+                        print!("Client says: {}", s);
+                        s.clear();
+                    },
+            Err(err) => {
+                println!("{}", err);
+            },
+            _ => s.clear(),
+        }
     }
+
 }
 
 
