@@ -38,14 +38,15 @@ fn run_client() {
 fn run_server() {
     let server = PipeOptions::new("\\\\.\\pipe\\MyPipe")
         .single().unwrap();
+    println!("Pipe open");
 
     let pipe = server.wait().unwrap();
-    println!("Pipe open");
+    println!("Client connected");
     let mut reader = BufReader::new(pipe);
     let mut s = String::new();
     loop {
         reader.read_line(&mut s).unwrap();
-        println!("Client says: {}", s);
+        print!("Client says: {}", s);
         s.clear();
     }
 }
